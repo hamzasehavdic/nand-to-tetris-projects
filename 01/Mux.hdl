@@ -1,0 +1,35 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Mux.hdl
+/** 
+ * Multiplexor:
+ * if (sel == 0) out = a, else out = b
+ */
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    // 1st synth component
+    /**
+    * if (a^b^sel) is True
+    * and if (a^b^~sel) is True
+    * then remove sel as it is not contingent on outcome
+    */
+    And (a=a, b=b, out=aAndb);
+    
+    // 2nd synth component  
+    Or (a=sel, b=b, out=selOrb);
+    Not (in=selOrb, out=selNorb);
+    And (a=a, b=selNorb, out=aAndselNorb);
+
+    // 3rd synth component
+    And (a=sel, b=b, out=selAndb);
+    Not (in=a, out=nota);
+    And (a=nota, b=selAndb, out=selAndbAndnota);
+
+    // Disjunct synthesized components until gates become Multiplexor
+    Or (a=aAndb, b=aAndselNorb, out=aAndbOraAndselNorb);
+    Or (a=aAndbOraAndselNorb, b=selAndbAndnota, out=out); 
+}
