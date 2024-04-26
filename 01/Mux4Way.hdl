@@ -1,0 +1,17 @@
+CHIP Mux4Way {
+    IN a, b, c, d, sel[2];
+    OUT out;
+
+    PARTS:
+    // Divide & Conquer
+    // Since a & b inputs and c & d inputs have similar paths;
+    // Meaning, since the first bit of a & b is 0, then you cannot fit in same Mux,
+    // So, feed opposite path input feeds on the same Muxes
+    // i.e. a is opp. to d then share mux, b is opp. to c then share mux
+    // the out of those muxes will go into a third mux to select on the final bit
+
+    Mux (a=a, b=b, sel=sel[0], out=aMuxb);
+    Mux (a=c, b=d, sel=sel[0], out=cMuxd);
+
+    Mux (a=aMuxb, b=cMuxd, sel=sel[1], out=out);
+}
