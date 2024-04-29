@@ -11,5 +11,25 @@ CHIP Add16 {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
+    // First bit has no carry, therefore, half-adder is enough
+    HalfAdder (a=a[0], b=b[0], sum=out[0], carry=b1c);
+
+    // Subsequent bit(s) may have carry, therefore, use full-adder
+    FullAdder (a=a[1], b=b[1], c=b1c, sum=out[1], carry=b2c);
+    FullAdder (a=a[2], b=b[2], c=b2c, sum=out[2], carry=b3c);
+    FullAdder (a=a[3], b=b[3], c=b3c, sum=out[3], carry=b4c);
+    FullAdder (a=a[4], b=b[4], c=b4c, sum=out[4], carry=b5c);
+    FullAdder (a=a[5], b=b[5], c=b5c, sum=out[5], carry=b6c);
+    FullAdder (a=a[6], b=b[6], c=b6c, sum=out[6], carry=b7c);
+    FullAdder (a=a[7], b=b[7], c=b7c, sum=out[7], carry=b8c);
+    FullAdder (a=a[8], b=b[8], c=b8c, sum=out[8], carry=b9c);
+    FullAdder (a=a[9], b=b[9], c=b9c, sum=out[9], carry=b10c);
+    FullAdder (a=a[10], b=b[10], c=b10c, sum=out[10], carry=b11c);
+    FullAdder (a=a[11], b=b[11], c=b11c, sum=out[11], carry=b12c);
+    FullAdder (a=a[12], b=b[12], c=b12c, sum=out[12], carry=b13c);
+    FullAdder (a=a[13], b=b[13], c=b13c, sum=out[13], carry=b14c);
+    FullAdder (a=a[14], b=b[14], c=b14c, sum=out[14], carry=b15c);
+    FullAdder (a=a[15], b=b[15], c=b15c, sum=out[15], carry=b16c);
+
+
 }
