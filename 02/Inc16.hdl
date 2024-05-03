@@ -11,5 +11,6 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-    //// Replace this comment with your code.
+    // Simply add the smallest bit (1)
+    Add16 (a[0..15]=in[0..15], b[0]=true, b[1..15]=false, out=out);
 }
