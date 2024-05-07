@@ -41,5 +41,43 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // Pre-process x input
+    Mux16 (a=x, b=false, sel=zx, 
+        out=zxOut);
+
+    Not16 (in=zxOut, out=Notx);
+    Mux16 (a=zxOut, b=Notx, sel=nx, 
+        out=nxOut);
+
+    // Pre-process y input
+    Mux16 (a=y, b=false, sel=zy, 
+        out=zyOut);
+    
+    Not16 (in=zyOut, out=Noty);
+    Mux16 (a=zyOut, b=Noty, sel=ny, 
+        out=nyOut);
+
+    // Apply valid f
+    Add16 (a=nxOut, b=nyOut, out=fPosCase);
+    And16 (a=nxOut, b=nyOut, out=fNegCase);
+
+    Mux16 (a=fNegCase, b=fPosCase, sel=f,
+        out=fOut); 
+
+    // bitwise not f Output and get leading bit for neg values 
+    Not16 (in=fOut, out=noOut);
+   
+    // Apply no if valid
+    Mux16 (a=fOut, b=noOut, sel=no,
+        out[0..7]=outRHS, out[8..15]=outLHS,
+        out[15]=ng, // if bin num leads with 1, then its negative 
+        out=out); // pass the correctly processed bin num
+    
+    // OR operator will only return 0 if bin num has no positive bit(s)
+    // therefore, its negation behaves as: isZero
+    Or8Way (in=outLHS, out=notContainsZeroLHS);
+    Or8Way (in=outRHS, out=notContainsZeroRHS);
+    Or (a=notContainsZeroRHS, b=notContainsZeroLHS, out=isNotZero); 
+    Not (in=isNotZero, 
+        out=zr);
 }
