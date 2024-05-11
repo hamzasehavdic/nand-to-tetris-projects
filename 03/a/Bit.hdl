@@ -13,5 +13,8 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // look at how it cycles
+    Mux (a=previous, b=in, sel=load, out=currentOut);
+    DFF (in=currentOut, out=previous, out=out); // outputs either out(t) or in(t)
+
 }
